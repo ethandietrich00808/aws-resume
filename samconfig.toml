@@ -1,0 +1,18 @@
+version: 0.1
+environment_variables:
+  AWS_DEFAULT_REGION: us-east-1
+  AWS_PROFILE: default
+
+sam:
+  build:
+    use_container: false
+  deploy:
+    stack_name: ethan-dietrich-website
+    s3_bucket: aws-sam-cli-managed-default-samclisourcebucket-1a2b3c4d5e6f
+    s3_prefix: ethan-dietrich-website
+    region: us-east-1
+    confirm_changeset: true
+    capabilities: CAPABILITY_IAM
+    parameter_overrides:
+      BucketName: cloudresume-ethan-dietrich-2
+      DomainName: ""
