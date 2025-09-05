@@ -19,10 +19,24 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Clean up files before sync
+        run: |
+          # Remove files that shouldn't be deployed
+          rm -f README.md
+          rm -f deploy.sh
+          rm -f infrastructure-diagram.md
+          rm -f template.yaml
+          rm -f samconfig.toml
+          rm -rf visitor-counter/
+          rm -rf .terraform/
+          rm -f *.tfstate*
+          rm -f .terraform.lock.hcl
+          rm -rf .git/
+
       - name: S3 Sync
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          args: --acl public-read --follow-symlinks --delete --exclude "*.md" --exclude "deploy.sh" --exclude ".git/*" --exclude ".env" --exclude ".github/*"
+          args: --acl public-read --follow-symlinks --delete
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_REGION: "us-east-1"
